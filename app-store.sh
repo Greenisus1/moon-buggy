@@ -4,8 +4,10 @@
 set -eu
 package=moon-buggy
 program=moon-buggy
-if ! command -v "$program" >/dev/null && [ -x /usr/games/moon-buggy ]; then program=/usr/games/moon-buggy; fi
-installed() { command -v dpkg-query >/dev/null && [ "$(dpkg-query -W -f='${Status}' "$package" 2>/dev/null || true)" = 'install ok installed' ] && command -v "$program" >/dev/null; }
+installed() {
+ program=moon-buggy
+ if ! command -v "$program" >/dev/null && [ -x /usr/games/moon-buggy ]; then program=/usr/games/moon-buggy; fi
+ command -v dpkg-query >/dev/null && [ "$(dpkg-query -W -f='${Status}' "$package" 2>/dev/null || true)" = 'install ok installed' ] && command -v "$program" >/dev/null; }
 case "${1:-status}" in
  status) if installed; then printf '%s is installed\n' "$package"; else printf '%s is not installed\n' "$package"; exit 1; fi ;;
  install)
